@@ -4,6 +4,8 @@ import CreateResume from './CreateResume';
 import UploadResume from './UploadResume';
 import DownloadResume from './DownloadResume'; 
 import AIScore from './AIScore';
+import TermsOfService from './TermsOfService';
+import PrivacyPolicy from './PrivacyPolicy';
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
         <Route path="/upload" element={<UploadResume />} />
         <Route path="/download" element={<DownloadResume />} /> 
         <Route path="/aiscore" element={<AIScore />} />
+        <Route path="/terms" element={<TermsOfService />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
       </Routes>
     </BrowserRouter>
   );

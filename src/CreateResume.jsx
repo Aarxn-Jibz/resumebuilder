@@ -1,30 +1,55 @@
-import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom'; 
-import { Loader2 } from 'lucide-react';
+import React, { useState, useRef } from "react";
+import { useNavigate, Link } from 'react-router-dom'; 
+import { Loader2, Plus, Trash2, MinusCircle, RotateCcw, GripVertical } from 'lucide-react';
 
 export default function CreateResume() {
   const navigate = useNavigate();
   const [isSaving, setIsSaving] = useState(false);
 
-  // State to hold all the form data
+  // Refs for Drag and Drop
+  const dragItem = useRef();
+  const dragOverItem = useRef();
+  const dragSection = useRef();
+  const dragOverSection = useRef();
+
+  // 1. State to control order of sections (Personal stays fixed at top)
+  const [sectionOrder, setSectionOrder] = useState([
+    { id: 'experience', label: 'Work Experience' },
+    { id: 'education', label: 'Education' },
+    { id: 'skills', label: 'Skills' },
+    { id: 'projects', label: 'Projects' }
+  ]);
+
+  // State to control visibility
+  const [visibleSections, setVisibleSections] = useState({
+    experience: true,
+    projects: true,
+    education: true,
+    skills: true
+  });
+
   const [formData, setFormData] = useState({
     personal: { name: "", phone: "", email: "", github: "", linkedin: "" },
     experience: [
-      { title: "", company: "", start: "", end: "", desc: "" },
       { title: "", company: "", start: "", end: "", desc: "" }
     ],
     education: [
-      { school: "", degree: "", start: "", end: "" },
       { school: "", degree: "", start: "", end: "" }
     ],
     skills: "",
     projects: [
-      { name: "", link: "", desc: "" },
       { name: "", link: "", desc: "" }
     ]
   });
 
-  // Generic handler to update personal details
+  const templates = {
+    experience: { title: "", company: "", start: "", end: "", desc: "" },
+    education: { school: "", degree: "", start: "", end: "" },
+    projects: { name: "", link: "", desc: "" }
+  };
+
+  // --- HANDLERS ---
+
   const handlePersonalChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -33,7 +58,6 @@ export default function CreateResume() {
     }));
   };
 
-  // Generic handler to update array items (Experience, Education, Projects)
   const handleArrayChange = (section, index, field, value) => {
     setFormData(prev => {
       const newSection = [...prev[section]];
@@ -42,147 +66,304 @@ export default function CreateResume() {
     });
   };
 
-  // The function that runs when you click "Create Resume"
+  const addBlock = (section) => {
+    setFormData(prev => ({
+      ...prev,
+      [section]: [...prev[section], templates[section]]
+    }));
+  };
+
+  const removeBlock = (section, index) => {
+    setFormData(prev => {
+      const newSection = [...prev[section]];
+      newSection.splice(index, 1);
+      return { ...prev, [section]: newSection };
+    });
+  };
+
+  const toggleSection = (section) => {
+    setVisibleSections(prev => ({
+      ...prev,
+      [section]: !prev[section]
+    }));
+  };
+
+  // --- DRAG AND DROP LOGIC ---
+
+  // 1. Reorder Items (Internal)
+  const handleSortItems = (section) => {
+    let _items = [...formData[section]];
+    // Remove item from old position
+    const draggedItemContent = _items.splice(dragItem.current, 1)[0];
+    // Add to new position
+    _items.splice(dragOverItem.current, 0, draggedItemContent);
+
+    // Reset refs
+    dragItem.current = null;
+    dragOverItem.current = null;
+
+    setFormData(prev => ({ ...prev, [section]: _items }));
+  };
+
+  // 2. Reorder Entire Sections
+  const handleSortSections = () => {
+    let _sections = [...sectionOrder];
+    const draggedSectionContent = _sections.splice(dragSection.current, 1)[0];
+    _sections.splice(dragOverSection.current, 0, draggedSectionContent);
+
+    dragSection.current = null;
+    dragOverSection.current = null;
+
+    setSectionOrder(_sections);
+  };
+
   const handleCreateResume = async () => {
     setIsSaving(true);
+    const finalData = { ...formData };
+    
+    // Clean hidden data and store Order
+    Object.keys(visibleSections).forEach(key => {
+      if (!visibleSections[key]) {
+        if (Array.isArray(finalData[key])) finalData[key] = [];
+        else finalData[key] = "";
+      }
+    });
 
-    // 1. Simulate saving to database/local storage
-    console.log("Saving Resume Data:", formData);
-    localStorage.setItem('resumeData', JSON.stringify(formData)); // Saving to local storage for now
+    // Save the Section Order too so we know how to print it later
+    finalData.sectionOrder = sectionOrder.map(s => s.id);
 
-    // 2. Fake delay for visual effect (optional)
+    console.log("Saving:", finalData);
+    localStorage.setItem('resumeData', JSON.stringify(finalData)); 
+
     setTimeout(() => {
       setIsSaving(false);
-      // 3. Go to the download page
       navigate('/download');
     }, 1500);
   };
 
+  // --- RENDER HELPERS ---
+
+  // This function renders the specific inputs based on section type
+  const renderSectionContent = (sectionId, item, index) => {
+    const commonInputClass = "bg-background-dark border border-border-dark h-12 rounded-lg px-4 pr-10 text-white focus:ring-1 focus:ring-primary outline-none w-full"; // Added pr-10 for trash icon space
+    
+    if (sectionId === 'experience') {
+      return (
+        <>
+          <input onChange={(e) => handleArrayChange('experience', index, 'title', e.target.value)} value={item.title} className={commonInputClass} placeholder="Job Title" />
+          <input onChange={(e) => handleArrayChange('experience', index, 'company', e.target.value)} value={item.company} className={commonInputClass} placeholder="Company Name" />
+          <input onChange={(e) => handleArrayChange('experience', index, 'start', e.target.value)} value={item.start} className={commonInputClass} placeholder="Start Date" />
+          <input onChange={(e) => handleArrayChange('experience', index, 'end', e.target.value)} value={item.end} className={commonInputClass} placeholder="End Date" />
+          <textarea onChange={(e) => handleArrayChange('experience', index, 'desc', e.target.value)} value={item.desc} className="md:col-span-2 bg-background-dark border border-border-dark rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-primary outline-none" rows={3} placeholder="Describe your role..."></textarea>
+        </>
+      );
+    }
+    if (sectionId === 'education') {
+      return (
+        <>
+          <input onChange={(e) => handleArrayChange('education', index, 'school', e.target.value)} value={item.school} className={commonInputClass} placeholder="Institution" />
+          <input onChange={(e) => handleArrayChange('education', index, 'degree', e.target.value)} value={item.degree} className={commonInputClass} placeholder="Degree" />
+          <input onChange={(e) => handleArrayChange('education', index, 'start', e.target.value)} value={item.start} className={commonInputClass} placeholder="Start Year" />
+          <input onChange={(e) => handleArrayChange('education', index, 'end', e.target.value)} value={item.end} className={commonInputClass} placeholder="End Year" />
+        </>
+      );
+    }
+    if (sectionId === 'projects') {
+      return (
+        <>
+          <input onChange={(e) => handleArrayChange('projects', index, 'name', e.target.value)} value={item.name} className={commonInputClass} placeholder="Project Name" />
+          <input onChange={(e) => handleArrayChange('projects', index, 'link', e.target.value)} value={item.link} className={commonInputClass} placeholder="Link (Optional)" />
+          <textarea onChange={(e) => handleArrayChange('projects', index, 'desc', e.target.value)} value={item.desc} className="md:col-span-2 bg-background-dark border border-border-dark rounded-lg px-4 py-3 text-white focus:ring-1 focus:ring-primary outline-none" rows={3} placeholder="Project Description..."></textarea>
+        </>
+      );
+    }
+  };
+
   return (
-    <div className="font-display bg-background-dark min-h-screen w-full flex flex-col">
+    <div className="font-display bg-background-dark min-h-screen w-full flex flex-col text-text-dark">
       <div className="flex flex-col flex-1 px-4 sm:px-8 md:px-20 lg:px-40 py-5">
         
-        {/* Header */}
-        <header className="flex items-center justify-between border-b border-border-dark px-4 sm:px-6 md:px-10 py-3 text-white">
-          <div className="flex items-center gap-4">
+        {/* Header (From Homepage) */}
+        <header className="flex items-center justify-between border-b border-border-dark px-4 sm:px-10 py-3">
+          <Link to="/" className="flex items-center gap-4 group transition-opacity">
             <div className="size-6 text-primary">
-              <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                <path d="M39.5563 34.1455V13.8546C39.5563 15.708 36.8773 17.3437 32.7927 18.3189C30.2914 18.916 27.263 19.2655 24 19.2655C20.737 19.2655 17.7086 18.916 15.2073 18.3189C11.1227 17.3437 8.44365 15.708 8.44365 13.8546V34.1455C8.44365 35.9988 11.1227 37.6346 15.2073 38.6098C17.7086 39.2069 20.737 39.5564 24 39.5564C27.263 39.5564 30.2914 39.2069 32.7927 38.6098C36.8773 37.6346 39.5563 35.9988 39.5563 34.1455Z" fill="currentColor" />
+              <svg fill="none" viewBox="0 0 48 48">
+                <path
+                  d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z"
+                  fill="currentColor"
+                />
               </svg>
             </div>
-            <h2 className="text-lg font-bold">ResuBuilder</h2>
+            <h2 className="text-lg font-bold group-hover:text-primary transition-colors">ResumeBuilder</h2>
+          </Link>
+
+          {/* Desktop Nav */}
+          <div className="hidden md:flex flex-1 justify-end gap-8 items-center">
+            <div className="flex gap-9 text-sm font-medium">
+              <a className="hover:text-primary transition-colors" href="#">Templates</a>
+              <Link to="/aiscore" className="hover:text-primary transition-colors">AI Score</Link>
+              <a className="hover:text-primary transition-colors" href="#">Blog</a>
+            </div>
+            <div className="flex gap-2">
+              <button className="rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-violet-400 transition-colors">
+                Sign Up
+              </button>
+              <button className="rounded-lg h-10 px-4 bg-background-dark border border-border-dark hover:bg-primary/10 text-sm font-bold transition-colors">
+                Login
+              </button>
+            </div>
           </div>
         </header>
 
-        <main className="flex flex-col gap-8 mt-8 text-white">
-          {/* HEADING */}
+        <main className="flex flex-col gap-8 mt-8">
           <div className="flex flex-wrap justify-between gap-3 p-4">
             <p className="text-4xl font-black tracking-tight">Create Your Resume</p>
           </div>
 
-          {/* PERSONAL DETAILS */}
-          <section>
-            <h2 className="text-[22px] font-bold px-4 pb-3 pt-5">Personal Details</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6">
-              <div className="flex flex-col gap-4 px-4 py-3">
-                <label className="flex flex-col">
-                  <p className="text-base pb-2">Full Name</p>
-                  <input name="name" onChange={handlePersonalChange} className="form-input bg-[#193333] border border-white/20 rounded-lg h-14 p-[15px] text-white placeholder:text-white/40 focus:ring-2 focus:ring-primary/50" placeholder="Enter your full name" />
-                </label>
+          {/* 1. PERSONAL DETAILS (Fixed at top) */}
+          <section className="animate-fadeIn">
+            <h2 className="text-[22px] font-bold px-4 pb-3 pt-5 text-primary">Personal Details</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 px-4">
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-medium text-subtext-dark">Full Name</label>
+                <input name="name" onChange={handlePersonalChange} className="bg-card-dark border border-border-dark rounded-lg h-12 px-4 text-text-dark focus:ring-2 focus:ring-primary outline-none" placeholder="e.g. John Doe" />
               </div>
-              <div className="flex flex-col gap-4 px-4 py-3">
-                <label className="flex flex-col">
-                  <p className="text-base pb-2">Phone Number</p>
-                  <input name="phone" onChange={handlePersonalChange} className="form-input bg-[#193333] border border-white/20 rounded-lg h-14 p-[15px] text-white placeholder:text-white/40 focus:ring-2 focus:ring-primary/50" placeholder="Enter your phone number" />
-                </label>
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-medium text-subtext-dark">Phone Number</label>
+                <input name="phone" onChange={handlePersonalChange} className="bg-card-dark border border-border-dark rounded-lg h-12 px-4 text-text-dark focus:ring-2 focus:ring-primary outline-none" placeholder="e.g. +91 9800123454" />
               </div>
-              <div className="flex flex-col gap-4 px-4 py-3">
-                <label className="flex flex-col">
-                  <p className="text-base pb-2">Email</p>
-                  <input name="email" onChange={handlePersonalChange} className="form-input bg-[#193333] border border-white/20 rounded-lg h-14 p-[15px] text-white placeholder:text-white/40 focus:ring-2 focus:ring-primary/50" placeholder="Enter your email" />
-                </label>
+              <div className="flex flex-col gap-2 md:col-span-2">
+                <label className="text-sm font-medium text-subtext-dark">Email</label>
+                <input name="email" onChange={handlePersonalChange} className="bg-card-dark border border-border-dark rounded-lg h-12 px-4 text-text-dark focus:ring-2 focus:ring-primary outline-none" placeholder="e.g. john@example.com" />
               </div>
-              <div className="flex flex-col gap-4 px-4 py-3">
-                <label className="flex flex-col">
-                  <p className="text-base pb-2">GitHub</p>
-                  <input name="github" onChange={handlePersonalChange} className="form-input bg-[#193333] border border-white/20 rounded-lg h-14 p-[15px] text-white placeholder:text-white/40 focus:ring-2 focus:ring-primary/50" placeholder="github.com/username" />
-                </label>
-              </div>
-              <div className="flex flex-col gap-4 px-4 py-3 md:col-span-2">
-                <label className="flex flex-col">
-                  <p className="text-base pb-2">LinkedIn</p>
-                  <input name="linkedin" onChange={handlePersonalChange} className="form-input bg-[#193333] border border-white/20 rounded-lg h-14 p-[15px] text-white placeholder:text-white/40 focus:ring-2 focus:ring-primary/50" placeholder="linkedin.com/in/username" />
-                </label>
-              </div>
-            </div>
-          </section>
-
-          {/* EXPERIENCE */}
-          <section>
-            <h2 className="text-[22px] font-bold px-4 pb-3 pt-5">Work Experience</h2>
-            <div className="flex flex-col gap-6 px-4">
-              {formData.experience.map((item, i) => (
-                <div key={i} className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-[#141F1F] p-5 rounded-xl border border-white/10">
-                  <input onChange={(e) => handleArrayChange('experience', i, 'title', e.target.value)} className="bg-[#193333] h-12 rounded-lg px-4 text-white" placeholder="Job Title" />
-                  <input onChange={(e) => handleArrayChange('experience', i, 'company', e.target.value)} className="bg-[#193333] h-12 rounded-lg px-4 text-white" placeholder="Company Name" />
-                  <input onChange={(e) => handleArrayChange('experience', i, 'start', e.target.value)} className="bg-[#193333] h-12 rounded-lg px-4 text-white" placeholder="Start Date" />
-                  <input onChange={(e) => handleArrayChange('experience', i, 'end', e.target.value)} className="bg-[#193333] h-12 rounded-lg px-4 text-white" placeholder="End Date" />
-                  <textarea onChange={(e) => handleArrayChange('experience', i, 'desc', e.target.value)} className="md:col-span-2 bg-[#193333] rounded-lg px-4 py-3 text-white" rows={3} placeholder="Describe your role and responsibilities"></textarea>
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-medium text-subtext-dark">GitHub</label>
+                <div className="flex items-center bg-card-dark border border-border-dark rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-primary">
+                  <span className="pl-4 pr-2 text-subtext-dark select-none">github.com/</span>
+                  <input name="github" onChange={handlePersonalChange} className="bg-transparent border-none h-12 w-full text-text-dark focus:ring-0 outline-none" placeholder="username" />
                 </div>
-              ))}
-            </div>
-          </section>
-
-          {/* EDUCATION */}
-          <section>
-            <h2 className="text-[22px] font-bold px-4 pb-3 pt-5">Education</h2>
-            <div className="flex flex-col gap-6 px-4">
-              {formData.education.map((item, i) => (
-                <div key={i} className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-[#141F1F] p-5 rounded-xl border border-white/10">
-                  <input onChange={(e) => handleArrayChange('education', i, 'school', e.target.value)} className="bg-[#193333] h-12 rounded-lg px-4 text-white" placeholder="Institution" />
-                  <input onChange={(e) => handleArrayChange('education', i, 'degree', e.target.value)} className="bg-[#193333] h-12 rounded-lg px-4 text-white" placeholder="Degree" />
-                  <input onChange={(e) => handleArrayChange('education', i, 'start', e.target.value)} className="bg-[#193333] h-12 rounded-lg px-4 text-white" placeholder="Start Year" />
-                  <input onChange={(e) => handleArrayChange('education', i, 'end', e.target.value)} className="bg-[#193333] h-12 rounded-lg px-4 text-white" placeholder="End Year" />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-sm font-medium text-subtext-dark">LinkedIn</label>
+                <div className="flex items-center bg-card-dark border border-border-dark rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-primary">
+                  <span className="pl-4 pr-2 text-subtext-dark select-none">linkedin.com/in/</span>
+                  <input name="linkedin" onChange={handlePersonalChange} className="bg-transparent border-none h-12 w-full text-text-dark focus:ring-0 outline-none" placeholder="username" />
                 </div>
-              ))}
+              </div>
             </div>
           </section>
 
-          {/* SKILLS */}
-          <section>
-            <h2 className="text-[22px] font-bold px-4 pb-3 pt-5">Skills</h2>
-            <div className="px-4">
-              <textarea
-                onChange={(e) => setFormData({...formData, skills: e.target.value})}
-                className="bg-[#193333] w-full rounded-lg p-4 h-32 text-white"
-                placeholder="List your skills separated by commas"
-              ></textarea>
-            </div>
-          </section>
+          {/* 2. DRAGGABLE SECTIONS */}
+          {sectionOrder.map((section, sectionIndex) => (
+            <div 
+              key={section.id}
+              draggable
+              onDragStart={() => (dragSection.current = sectionIndex)}
+              onDragEnter={() => (dragOverSection.current = sectionIndex)}
+              onDragEnd={handleSortSections}
+              onDragOver={(e) => e.preventDefault()}
+              className="transition-all"
+            >
+              {/* SKILLS (Special Case: Textarea) */}
+              {section.id === 'skills' ? (
+                 <section className="relative group">
+                 <div className="flex items-center justify-between px-4 pb-3 pt-5">
+                   <div className="flex items-center gap-3">
+                     {/* Section Handle */}
+                     <div className="cursor-grab active:cursor-grabbing p-1 hover:bg-white/10 rounded text-subtext-dark">
+                       <GripVertical size={20} />
+                     </div>
+                     <h2 className="text-[22px] font-bold text-primary">Skills</h2>
+                   </div>
+                   <button onClick={() => toggleSection('skills')} className="text-subtext-dark hover:text-red-400 transition-colors">
+                     {visibleSections.skills ? <MinusCircle size={24} /> : <RotateCcw size={24} />}
+                   </button>
+                 </div>
+                 {visibleSections.skills && (
+                   <div className="px-4">
+                     <textarea
+                       onChange={(e) => setFormData({...formData, skills: e.target.value})}
+                       className="bg-card-dark border border-border-dark w-full rounded-lg p-4 h-32 text-white focus:ring-2 focus:ring-primary outline-none"
+                       placeholder="List your skills separated by commas..."
+                     ></textarea>
+                   </div>
+                 )}
+               </section>
+              ) : (
+                /* GENERIC ARRAY SECTIONS (Experience, Education, Projects) */
+                <section>
+                  <div className="flex items-center justify-between px-4 pb-3 pt-5">
+                    <div className="flex items-center gap-3">
+                      {/* Section Handle */}
+                      <div className="cursor-grab active:cursor-grabbing p-1 hover:bg-white/10 rounded text-subtext-dark">
+                        <GripVertical size={20} />
+                      </div>
+                      <h2 className={`text-[22px] font-bold transition-colors ${visibleSections[section.id] ? 'text-primary' : 'text-subtext-dark'}`}>
+                        {section.label}
+                      </h2>
+                    </div>
+                    <button 
+                      onClick={() => toggleSection(section.id)} 
+                      className="text-subtext-dark hover:text-red-400 transition-colors"
+                    >
+                      {visibleSections[section.id] ? <MinusCircle size={24} /> : <RotateCcw size={24} />}
+                    </button>
+                  </div>
 
-          {/* PROJECTS */}
-          <section>
-            <h2 className="text-[22px] font-bold px-4 pb-3 pt-5">Projects</h2>
-            <div className="flex flex-col gap-6 px-4">
-              {formData.projects.map((item, i) => (
-                <div key={i} className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-[#141F1F] p-5 rounded-xl border border-white/10">
-                  <input onChange={(e) => handleArrayChange('projects', i, 'name', e.target.value)} className="bg-[#193333] h-12 rounded-lg px-4 text-white" placeholder="Project Name" />
-                  <input onChange={(e) => handleArrayChange('projects', i, 'link', e.target.value)} className="bg-[#193333] h-12 rounded-lg px-4 text-white" placeholder="Link (Optional)" />
-                  <textarea onChange={(e) => handleArrayChange('projects', i, 'desc', e.target.value)} className="md:col-span-2 bg-[#193333] rounded-lg px-4 py-3 text-white" rows={3} placeholder="Project Description"></textarea>
-                </div>
-              ))}
-            </div>
-          </section>
+                  {visibleSections[section.id] && (
+                    <div className="flex flex-col gap-6 px-4">
+                      {formData[section.id].map((item, i) => (
+                        <div 
+                          key={i} 
+                          draggable
+                          onDragStart={() => (dragItem.current = i)}
+                          onDragEnter={() => (dragOverItem.current = i)}
+                          onDragEnd={() => handleSortItems(section.id)}
+                          onDragOver={(e) => e.preventDefault()}
+                          className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-card-dark p-6 pt-10 rounded-xl border border-border-dark relative group transition-transform"
+                        >
+                          {/* Item Handle */}
+                          <div className="absolute top-4 left-1/2 -translate-x-1/2 cursor-grab active:cursor-grabbing text-subtext-dark hover:text-white">
+                             <GripVertical size={18} />
+                          </div>
 
-          {/* DOWNLOAD BUTTON (Functional) */}
+                          {/* Trash Icon - Fixed overlapping by using absolute positioning and ensuring input padding */}
+                          <button 
+                            onClick={() => removeBlock(section.id, i)}
+                            className="absolute top-4 right-4 text-subtext-dark hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <Trash2 size={18} />
+                          </button>
+
+                          {renderSectionContent(section.id, item, i)}
+                        </div>
+                      ))}
+                      <button 
+                        onClick={() => addBlock(section.id)}
+                        className="flex items-center justify-center gap-2 py-3 border-2 border-dashed border-border-dark rounded-xl text-subtext-dark hover:text-primary hover:border-primary transition-all"
+                      >
+                        <Plus size={20} /> Add {section.label}
+                      </button>
+                    </div>
+                  )}
+                  {!visibleSections[section.id] && (
+                    <div className="px-4 py-4 text-center border border-dashed border-border-dark rounded-xl text-subtext-dark italic">
+                      {section.label} section hidden
+                    </div>
+                  )}
+                </section>
+              )}
+            </div>
+          ))}
+
           <div className="px-4 pb-10">
             <button 
               onClick={handleCreateResume}
               disabled={isSaving}
-              className="mt-6 w-full bg-primary text-black font-bold py-4 rounded-xl hover:opacity-90 transition flex items-center justify-center gap-2"
+              className="mt-6 w-full bg-primary text-white font-bold py-4 rounded-xl hover:bg-violet-400 transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20"
             >
               {isSaving ? <Loader2 className="animate-spin" /> : null}
-              {isSaving ? "Creating Resume..." : "Create & Download Resume (PDF)"}
+              {isSaving ? "Creating Resume..." : "Create Resume"}
             </button>
           </div>
 
