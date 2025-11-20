@@ -24,7 +24,7 @@ export default function Home() {
           <div className="hidden md:flex flex-1 justify-end gap-8">
             <div className="flex gap-9">
               <a className="text-sm hover:text-primary" href="#">Templates</a>
-              <a className="text-sm hover:text-primary" href="#">AI Score</a>
+              <Link to="/aiscore" className="text-sm hover:text-primary">AI Score</Link>
               <a className="text-sm hover:text-primary" href="#">Blog</a>
             </div>
 
