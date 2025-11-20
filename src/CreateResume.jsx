@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from 'react-router-dom';
 export default function CreateResume() {
   return (
     <div className="font-display bg-black min-h-screen w-full flex flex-col">
@@ -111,9 +111,12 @@ export default function CreateResume() {
 
           {/* DOWNLOAD BUTTON */}
           <div className="px-4 pb-10">
-            <button className="mt-6 w-full bg-primary text-black font-bold py-4 rounded-xl hover:opacity-90 transition">
-              Generate Resume
-            </button>
+            <Link
+              to="/download"
+              className="mt-6 w-full block text-center bg-primary text-black font-bold py-4 rounded-xl hover:opacity-90 transition"
+            >
+              Create Resume
+            </Link>
           </div>
         </main>
       </div>
