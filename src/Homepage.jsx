@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from 'react-router-dom'; // <--- 1. Added Import
 
 export default function Home() {
   return (
@@ -55,17 +56,26 @@ export default function Home() {
               Our AI-powered tools help you create a professional resume in minutes.
             </p>
 
+            {/* --- 2. UPDATED BUTTONS TO LINKS --- */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-              <button className="flex items-center gap-2 h-12 px-5 bg-primary text-black font-bold rounded-lg">
+              <Link 
+                to="/create" 
+                className="flex items-center gap-2 h-12 px-5 bg-primary text-black font-bold rounded-lg hover:bg-emerald-400 transition-colors"
+              >
                 <span className="material-symbols-outlined">add_circle</span>
                 Create New Resume
-              </button>
+              </Link>
 
-              <button className="flex items-center gap-2 h-12 px-5 bg-card-dark border border-border-dark text-text-dark hover:bg-primary/10 font-bold rounded-lg">
+              <Link 
+                to="/upload" 
+                className="flex items-center gap-2 h-12 px-5 bg-card-dark border border-border-dark text-text-dark hover:bg-primary/10 font-bold rounded-lg transition-colors"
+              >
                 <span className="material-symbols-outlined">upload_file</span>
                 Upload & Optimize
-              </button>
+              </Link>
             </div>
+            {/* ----------------------------------- */}
+            
           </section>
 
           {/* Features */}
