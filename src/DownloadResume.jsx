@@ -174,10 +174,10 @@ export default function DownloadResume() {
             <div className="size-20 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-2">
                 <CheckCircle size={48} />
             </div>
-            <h1 className="text-4xl md:text-5xl font-black leading-tight">
+            <h1 className="text-3xl md:text-5xl font-black leading-tight">
               Your Resume is Ready!
             </h1>
-            <p className="text-subtext-dark text-lg max-w-md mx-auto">
+            <p className="text-subtext-dark text-base md:text-lg max-w-md mx-auto">
               Congratulations! Your resume has been successfully generated.
             </p>
           </div>
@@ -204,7 +204,7 @@ export default function DownloadResume() {
             </button>
           </div>
           
-          <Link to="/create" className="text-subtext-dark hover:text-primary text-sm transition-colors">
+          <Link to="/create" className="text-subtext-dark hover:text-primary text-sm py-2 transition-colors">
             Go back to editor
           </Link>
 

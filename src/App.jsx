@@ -6,10 +6,12 @@ import DownloadResume from './DownloadResume';
 import AIScore from './AIScore';
 import TermsOfService from './TermsOfService';
 import PrivacyPolicy from './PrivacyPolicy';
+import AuraCursor from './AuraCursor'; 
 
 function App() {
   return (
     <BrowserRouter>
+      <AuraCursor /> 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/create" element={<CreateResume />} />

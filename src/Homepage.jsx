@@ -1,13 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from 'react-router-dom'; 
 
 export default function Home() {
   // 1. Scroll-to-Top Logic
   const { pathname } = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   return (
     <div className="font-display bg-background-dark text-text-dark min-h-screen relative selection:bg-primary/20">
@@ -50,11 +60,70 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Mobile Menu */}
-          <button className="md:hidden size-10 rounded-lg border border-border-dark flex items-center justify-center">
-            <span className="material-symbols-outlined">menu</span>
+          {/* Mobile Menu Button */}
+          <button 
+            className="md:hidden size-12 rounded-lg border border-border-dark flex items-center justify-center" // Increased touch target
+            onClick={toggleMobileMenu}
+            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+          >
+            <span className="material-symbols-outlined">
+              {isMobileMenuOpen ? "close" : "menu"}
+            </span>
           </button>
         </header>
+
+        {/* Mobile Menu Overlay */}
+        {isMobileMenuOpen && (
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 md:hidden">
+            <div className="absolute top-0 right-0 h-full w-4/5 max-w-sm bg-background-dark p-6 shadow-xl">
+              <div className="flex flex-col gap-6">
+                {/* Close button within menu */}
+                <div className="flex justify-end">
+                  <button 
+                    className="size-10 rounded-lg border border-border-dark flex items-center justify-center"
+                    onClick={toggleMobileMenu}
+                    aria-label="Close menu"
+                  >
+                    <span className="material-symbols-outlined">close</span>
+                  </button>
+                </div>
+                
+                <div className="pt-10 flex flex-col gap-6">
+                  <a 
+                    className="text-xl font-medium hover:text-primary transition-colors py-3 border-b border-border-dark"
+                    href="#" 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Templates
+                  </a>
+                  <Link 
+                    to="/aiscore" 
+                    className="text-xl font-medium hover:text-primary transition-colors py-3 border-b border-border-dark"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    AI Score
+                  </Link>
+                  <a 
+                    className="text-xl font-medium hover:text-primary transition-colors py-3 border-b border-border-dark"
+                    href="#" 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Blog
+                  </a>
+                  
+                  <div className="pt-6 flex flex-col gap-4">
+                    <button className="w-full h-14 rounded-lg bg-primary text-white text-lg font-bold hover:bg-violet-400 transition-colors">
+                      Sign Up
+                    </button>
+                    <button className="w-full h-14 rounded-lg bg-background-dark border border-border-dark hover:bg-primary/10 text-lg font-bold transition-colors">
+                      Login
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Main */}
         <main className="flex flex-col gap-6 px-4 sm:px-8 relative z-10">
@@ -72,7 +141,7 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
               <Link 
                 to="/create" 
-                className="flex items-center gap-2 h-12 px-5 bg-primary text-white font-bold rounded-lg hover:bg-violet-400 transition-colors"
+                className="flex items-center justify-center gap-2 h-14 px-6 bg-primary text-white font-bold rounded-lg hover:bg-violet-400 transition-colors" // Increased touch target
               >
                 <span className="material-symbols-outlined">add_circle</span>
                 Create New Resume
@@ -80,7 +149,7 @@ export default function Home() {
 
               <Link 
                 to="/upload" 
-                className="flex items-center gap-2 h-12 px-5 bg-card-dark border border-border-dark text-text-dark hover:bg-primary/10 font-bold rounded-lg transition-colors"
+                className="flex items-center justify-center gap-2 h-14 px-6 bg-card-dark border border-border-dark text-text-dark hover:bg-primary/10 font-bold rounded-lg transition-colors" // Increased touch target
               >
                 <span className="material-symbols-outlined">upload_file</span>
                 Upload & Optimize
@@ -120,9 +189,9 @@ export default function Home() {
                 ].map((f, i) => (
                   <div
                     key={i}
-                    className="rounded-2xl border border-border-dark bg-card-dark p-6 flex flex-col sm:flex-row items-start gap-4 hover:border-primary/50 transition-colors text-left"
+                    className="rounded-2xl border border-border-dark bg-card-dark p-6 flex flex-col items-center gap-4 hover:border-primary/50 transition-colors text-center" // Centered content for mobile
                   >
-                    <span className="material-symbols-outlined text-primary text-5xl shrink-0">
+                    <span className="material-symbols-outlined text-primary text-5xl">
                       {f.icon}
                     </span>
                     <div className="flex flex-col gap-2">
@@ -206,7 +275,7 @@ export default function Home() {
                 </p>
                 <Link 
                   to="/create" 
-                  className="h-14 px-8 flex items-center justify-center bg-primary text-white font-bold text-lg rounded-xl hover:bg-violet-400 transition-all shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-1"
+                  className="h-16 px-8 flex items-center justify-center bg-primary text-white font-bold text-lg rounded-xl hover:bg-violet-400 transition-all shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-1" // Increased touch target
                 >
                   Build My Resume Now
                 </Link>
@@ -235,10 +304,10 @@ export default function Home() {
 
             {/* Center Section (Links) */}
             <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-subtext-dark">
-              <a className="hover:text-primary" href="#">About Us</a>
-              <a className="hover:text-primary" href="#">Contact</a>
-              <Link to="/privacy" className="hover:text-primary">Privacy Policy</Link>
-              <Link to="/terms" className="hover:text-primary">Terms of Service</Link>
+              <a className="hover:text-primary py-2" href="#">About Us</a> {/* Added padding for touch targets */}
+              <a className="hover:text-primary py-2" href="#">Contact</a>
+              <Link to="/privacy" className="hover:text-primary py-2">Privacy Policy</Link>
+              <Link to="/terms" className="hover:text-primary py-2">Terms of Service</Link>
             </div>
 
             {/* Right Section (Copyright) */}

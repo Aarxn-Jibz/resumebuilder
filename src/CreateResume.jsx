@@ -21,7 +21,7 @@ export default function CreateResume() {
   ]);
 
   // State to control visibility
-  const [visibleSections, setVisibleSections] = useState({
+  const [visibleSections, setVisibleServices] = useState({
     experience: true,
     projects: true,
     education: true,
@@ -226,28 +226,28 @@ export default function CreateResume() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 px-4">
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-medium text-subtext-dark">Full Name</label>
-                <input name="name" onChange={handlePersonalChange} className="bg-card-dark border border-border-dark rounded-lg h-12 px-4 text-text-dark focus:ring-2 focus:ring-primary outline-none" placeholder="e.g. John Doe" />
+                <input name="name" onChange={handlePersonalChange} className="bg-card-dark border border-border-dark rounded-lg h-14 px-4 text-text-dark focus:ring-2 focus:ring-primary outline-none" placeholder="e.g. John Doe" /> {/* Increased touch target */}
               </div>
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-medium text-subtext-dark">Phone Number</label>
-                <input name="phone" onChange={handlePersonalChange} className="bg-card-dark border border-border-dark rounded-lg h-12 px-4 text-text-dark focus:ring-2 focus:ring-primary outline-none" placeholder="e.g. +91 9800123454" />
+                <input name="phone" onChange={handlePersonalChange} className="bg-card-dark border border-border-dark rounded-lg h-14 px-4 text-text-dark focus:ring-2 focus:ring-primary outline-none" placeholder="e.g. +91 9800123454" /> {/* Increased touch target */}
               </div>
               <div className="flex flex-col gap-2 md:col-span-2">
                 <label className="text-sm font-medium text-subtext-dark">Email</label>
-                <input name="email" onChange={handlePersonalChange} className="bg-card-dark border border-border-dark rounded-lg h-12 px-4 text-text-dark focus:ring-2 focus:ring-primary outline-none" placeholder="e.g. john@example.com" />
+                <input name="email" onChange={handlePersonalChange} className="bg-card-dark border border-border-dark rounded-lg h-14 px-4 text-text-dark focus:ring-2 focus:ring-primary outline-none" placeholder="e.g. john@example.com" /> {/* Increased touch target */}
               </div>
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-medium text-subtext-dark">GitHub</label>
                 <div className="flex items-center bg-card-dark border border-border-dark rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-primary">
                   <span className="pl-4 pr-2 text-subtext-dark select-none">github.com/</span>
-                  <input name="github" onChange={handlePersonalChange} className="bg-transparent border-none h-12 w-full text-text-dark focus:ring-0 outline-none" placeholder="username" />
+                  <input name="github" onChange={handlePersonalChange} className="bg-transparent border-none h-14 w-full text-text-dark focus:ring-0 outline-none" placeholder="username" /> {/* Increased touch target */}
                 </div>
               </div>
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-medium text-subtext-dark">LinkedIn</label>
                 <div className="flex items-center bg-card-dark border border-border-dark rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-primary">
                   <span className="pl-4 pr-2 text-subtext-dark select-none">linkedin.com/in/</span>
-                  <input name="linkedin" onChange={handlePersonalChange} className="bg-transparent border-none h-12 w-full text-text-dark focus:ring-0 outline-none" placeholder="username" />
+                  <input name="linkedin" onChange={handlePersonalChange} className="bg-transparent border-none h-14 w-full text-text-dark focus:ring-0 outline-none" placeholder="username" /> {/* Increased touch target */}
                 </div>
               </div>
             </div>
@@ -270,12 +270,12 @@ export default function CreateResume() {
                  <div className="flex items-center justify-between px-4 pb-3 pt-5">
                    <div className="flex items-center gap-3">
                      {/* Section Handle */}
-                     <div className="cursor-grab active:cursor-grabbing p-1 hover:bg-white/10 rounded text-subtext-dark">
+                     <div className="cursor-grab active:cursor-grabbing p-2 hover:bg-white/10 rounded text-subtext-dark"> {/* Increased touch target */}
                        <GripVertical size={20} />
                      </div>
                      <h2 className="text-[22px] font-bold text-primary">Skills</h2>
                    </div>
-                   <button onClick={() => toggleSection('skills')} className="text-subtext-dark hover:text-red-400 transition-colors">
+                   <button onClick={() => toggleSection('skills')} className="text-subtext-dark hover:text-red-400 transition-colors p-2"> {/* Increased touch target */}
                      {visibleSections.skills ? <MinusCircle size={24} /> : <RotateCcw size={24} />}
                    </button>
                  </div>
@@ -295,7 +295,7 @@ export default function CreateResume() {
                   <div className="flex items-center justify-between px-4 pb-3 pt-5">
                     <div className="flex items-center gap-3">
                       {/* Section Handle */}
-                      <div className="cursor-grab active:cursor-grabbing p-1 hover:bg-white/10 rounded text-subtext-dark">
+                      <div className="cursor-grab active:cursor-grabbing p-2 hover:bg-white/10 rounded text-subtext-dark"> {/* Increased touch target */}
                         <GripVertical size={20} />
                       </div>
                       <h2 className={`text-[22px] font-bold transition-colors ${visibleSections[section.id] ? 'text-primary' : 'text-subtext-dark'}`}>
@@ -304,7 +304,7 @@ export default function CreateResume() {
                     </div>
                     <button 
                       onClick={() => toggleSection(section.id)} 
-                      className="text-subtext-dark hover:text-red-400 transition-colors"
+                      className="text-subtext-dark hover:text-red-400 transition-colors p-2" // Increased touch target
                     >
                       {visibleSections[section.id] ? <MinusCircle size={24} /> : <RotateCcw size={24} />}
                     </button>
@@ -323,14 +323,14 @@ export default function CreateResume() {
                           className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-card-dark p-6 pt-10 rounded-xl border border-border-dark relative group transition-transform"
                         >
                           {/* Item Handle */}
-                          <div className="absolute top-4 left-1/2 -translate-x-1/2 cursor-grab active:cursor-grabbing text-subtext-dark hover:text-white">
+                          <div className="absolute top-4 left-1/2 -translate-x-1/2 cursor-grab active:cursor-grabbing text-subtext-dark hover:text-white p-2"> {/* Increased touch target */}
                              <GripVertical size={18} />
                           </div>
 
                           {/* Trash Icon - Fixed overlapping by using absolute positioning and ensuring input padding */}
                           <button 
                             onClick={() => removeBlock(section.id, i)}
-                            className="absolute top-4 right-4 text-subtext-dark hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                            className="absolute top-4 right-4 text-subtext-dark hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity p-2" // Increased touch target
                           >
                             <Trash2 size={18} />
                           </button>
@@ -340,7 +340,7 @@ export default function CreateResume() {
                       ))}
                       <button 
                         onClick={() => addBlock(section.id)}
-                        className="flex items-center justify-center gap-2 py-3 border-2 border-dashed border-border-dark rounded-xl text-subtext-dark hover:text-primary hover:border-primary transition-all"
+                        className="flex items-center justify-center gap-2 py-4 border-2 border-dashed border-border-dark rounded-xl text-subtext-dark hover:text-primary hover:border-primary transition-all"
                       >
                         <Plus size={20} /> Add {section.label}
                       </button>
