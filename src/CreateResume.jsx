@@ -112,7 +112,7 @@ export default function CreateResume() {
           {/* DOWNLOAD BUTTON */}
           <div className="px-4 pb-10">
             <button className="mt-6 w-full bg-primary text-black font-bold py-4 rounded-xl hover:opacity-90 transition">
-              Download Resume (PDF)
+              Generate Resume
             </button>
           </div>
         </main>
