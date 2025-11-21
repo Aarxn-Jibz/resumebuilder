@@ -47,15 +47,11 @@ export default function Home() {
             <div className="flex gap-9 text-sm font-medium">
               <a className="hover:text-primary transition-colors" href="#">Templates</a>
               <Link to="/aiscore" className="hover:text-primary transition-colors">AI Score</Link>
-              <a className="hover:text-primary transition-colors" href="#">Blog</a>
             </div>
 
             <div className="flex gap-2">
               <button className="rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-violet-400 transition-colors">
                 Sign Up
-              </button>
-              <button className="rounded-lg h-10 px-4 bg-background-dark border border-border-dark hover:bg-primary/10 text-sm font-bold transition-colors">
-                Login
               </button>
             </div>
           </div>
@@ -103,20 +99,10 @@ export default function Home() {
                   >
                     AI Score
                   </Link>
-                  <a 
-                    className="text-xl font-medium hover:text-primary transition-colors py-3 border-b border-border-dark"
-                    href="#" 
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Blog
-                  </a>
                   
                   <div className="pt-6 flex flex-col gap-4">
                     <button className="w-full h-14 rounded-lg bg-primary text-white text-lg font-bold hover:bg-violet-400 transition-colors">
                       Sign Up
-                    </button>
-                    <button className="w-full h-14 rounded-lg bg-background-dark border border-border-dark hover:bg-primary/10 text-lg font-bold transition-colors">
-                      Login
                     </button>
                   </div>
                 </div>
@@ -304,7 +290,7 @@ export default function Home() {
 
             {/* Center Section (Links) */}
             <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-subtext-dark">
-              <a className="hover:text-primary py-2" href="#">About Us</a> {/* Added padding for touch targets */}
+              <Link to="/about" className="hover:text-primary py-2">About Us</Link> {/* Added padding for touch targets */}
               <a className="hover:text-primary py-2" href="#">Contact</a>
               <Link to="/privacy" className="hover:text-primary py-2">Privacy Policy</Link>
               <Link to="/terms" className="hover:text-primary py-2">Terms of Service</Link>

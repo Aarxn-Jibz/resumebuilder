@@ -246,11 +246,9 @@ export default function AIScore() {
           <div className="flex gap-9 text-sm font-medium">
             <a className="hover:text-primary transition-colors" href="#">Templates</a>
             <Link to="/aiscore" className="text-primary transition-colors">AI Score</Link>
-            <a className="hover:text-primary transition-colors" href="#">Blog</a>
           </div>
           <div className="flex gap-2">
              <button className="rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-violet-400 transition-colors">Sign Up</button>
-             <button className="rounded-lg h-10 px-4 bg-background-dark border border-border-dark hover:bg-primary/10 text-sm font-bold transition-colors">Login</button>
           </div>
         </div>
       </header>

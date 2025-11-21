@@ -27,10 +27,9 @@ const AuraCursor = () => {
     <div
       className="cursor-glow"
       style={{
-        transform: `translate(${position.x}px, ${position.y}px)`,
+        left: `${position.x}px`,
+        top: `${position.y}px`,
         opacity: isVisible ? 1 : 0,
-        width: '40px',  
-        height: '40px', 
       }}
     />
   );

@@ -7,6 +7,7 @@ import AIScore from './AIScore';
 import TermsOfService from './TermsOfService';
 import PrivacyPolicy from './PrivacyPolicy';
 import AuraCursor from './AuraCursor'; 
+import About from './About.jsx';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/aiscore" element={<AIScore />} />
         <Route path="/terms" element={<TermsOfService />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </BrowserRouter>
   );
