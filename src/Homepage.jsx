@@ -95,11 +95,6 @@ export default function Home() {
                     AI Score
                   </Link>
                   
-                  <div className="pt-6 flex flex-col gap-4">
-                    <button className="w-full h-14 rounded-lg bg-primary text-white text-lg font-bold hover:bg-violet-400 transition-colors">
-                      Sign Up
-                    </button>
-                  </div>
                 </div>
               </div>
             </div>
