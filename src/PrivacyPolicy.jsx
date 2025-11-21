@@ -26,11 +26,6 @@ export default function PrivacyPolicy() {
               <Link to="/" className="text-sm hover:text-primary">Home</Link>
               <Link to="/aiscore" className="text-sm hover:text-primary">AI Score</Link>
             </div>
-            <div className="flex gap-2">
-              <button className="rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-violet-400 transition-colors">
-                Sign Up
-              </button>
-            </div>
           </div>
 
           {/* Mobile Menu */}

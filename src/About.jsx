@@ -86,11 +86,6 @@ export default function About() {
                 <div className="pt-10 flex flex-col gap-6">
                   <a className="text-xl font-medium hover:text-primary transition-colors py-3 border-b border-border-dark" href="#" onClick={() => setIsMobileMenuOpen(false)}>Templates</a>
                   <Link to="/aiscore" className="text-xl font-medium hover:text-primary transition-colors py-3 border-b border-border-dark" onClick={() => setIsMobileMenuOpen(false)}>AI Score</Link>
-                  <div className="pt-6 flex flex-col gap-4">
-                    <button className="w-full h-14 rounded-lg bg-primary text-white text-lg font-bold hover:bg-violet-400 transition-colors">
-                      Sign Up
-                    </button>
-                  </div>
                 </div>
               </div>
             </div>
@@ -226,7 +221,7 @@ export default function About() {
             <div className="text-center mb-8">
               <h2 className="text-3xl sm:text-4xl font-black">Powered By</h2>
               <p className="text-subtext-dark mt-4">
-                Built with modern, open-source tools — and a lot of coffee ☕
+                Built with modern, open-source tools — and a lot of KFC Wings
               </p>
             </div>
 

@@ -203,11 +203,6 @@ export default function CreateResume() {
               <a className="hover:text-primary transition-colors" href="#">Templates</a>
               <Link to="/aiscore" className="hover:text-primary transition-colors">AI Score</Link>
             </div>
-            <div className="flex gap-2">
-              <button className="rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-violet-400 transition-colors">
-                Sign Up
-              </button>
-            </div>
           </div>
         </header>
 
