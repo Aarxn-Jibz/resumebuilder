@@ -1,4 +1,4 @@
-<center>![alt text](image.png)</center>
+<center><div>![alt text](image.png)</div></center>
 
 A React-based application for creating and managing professional resumes made at the Nexus Crew AI Hackathon by [Aaron Jibin](https://github.com/Aarxn-Jibz), [Anadhika Goswami](https://github.com/anadhikag), [Anna Isson](https://github.com/AnnaIsson) and [Joel D'Silva](https://github.com/joel-dsilva) held at Christ University, Bangalore. You can access the website [here](https://resumebuilder-45k.pages.dev/).
 
