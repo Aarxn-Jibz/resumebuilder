@@ -45,7 +45,6 @@ export default function Home() {
           {/* Desktop Nav */}
           <div className="hidden md:flex flex-1 justify-end gap-8 items-center">
             <div className="flex gap-9 text-sm font-medium">
-              <a className="hover:text-primary transition-colors" href="#">Templates</a>
               <Link to="/aiscore" className="hover:text-primary transition-colors">AI Score</Link>
             </div>
 
@@ -122,7 +121,7 @@ export default function Home() {
                 <span className="material-symbols-outlined">add_circle</span>
                 Create New Resume
               </Link>
-
+{/*
               <Link 
                 to="/upload" 
                 className="flex items-center justify-center gap-2 h-14 px-6 bg-card-dark border border-border-dark text-text-dark hover:bg-primary/10 font-bold rounded-lg transition-colors" // Increased touch target
@@ -130,6 +129,7 @@ export default function Home() {
                 <span className="material-symbols-outlined">upload_file</span>
                 Upload & Optimize
               </Link>
+              */}
             </div>
           </section>
 
@@ -145,13 +145,13 @@ export default function Home() {
             </div>
 
             <div className="max-w-5xl mx-auto w-full">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
                 {[
-                  {
-                    icon: "dashboard",
-                    title: "Dozens of Templates",
-                    desc: "Choose from professionally designed templates to match your industry."
-                  },
+                 // { 
+                  //  icon: "dashboard", 
+                  //  title: "Dozens of Templates",
+                  //  desc: "Choose from professionally designed templates to match your industry."
+                //  },
                   {
                     icon: "download",
                     title: "Instant Download",
@@ -183,13 +183,13 @@ export default function Home() {
           {/* Steps */}
           <section className="flex flex-col gap-10 pt-0 pb-10">
             <div className="text-center">
-              <h1 className="text-3xl sm:text-4xl font-black">Get Started in 3 Simple Steps</h1>
+              <h1 className="text-3xl sm:text-4xl font-black">Get Started in 2 Simple Steps</h1>
               <p className="text-subtext-dark max-w-2xl mx-auto mt-6 text-lg">
                 Creating a professional resume has never been this easy.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative max-w-6xl mx-auto w-full">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative max-w-6xl mx-auto w-full">
               
               <div className="hidden md:block absolute top-12 left-0 w-full h-px">
                 <svg className="text-border-dark" height="2" width="100%">
@@ -206,18 +206,18 @@ export default function Home() {
               </div>
 
               {[
+                //{
+                //  num: "1",
+                //  title: "Choose a Template",
+                //  desc: "Select from our library of templates."
+                //},
                 {
                   num: "1",
-                  title: "Choose a Template",
-                  desc: "Select from our library of templates."
-                },
-                {
-                  num: "2",
                   title: "Fill in Your Details",
                   desc: "Use our guided editor and AI suggestions."
                 },
                 {
-                  num: "3",
+                  num: "2",
                   title: "Download & Apply",
                   desc: "Download your resume as a PDF."
                 }
@@ -280,8 +280,6 @@ export default function Home() {
 
             {/* Center Section (Links) */}
             <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-subtext-dark">
-              <Link to="/about" className="hover:text-primary py-2">About Us</Link> {/* Added padding for touch targets */}
-              <a className="hover:text-primary py-2" href="#">Contact</a>
               <Link to="/privacy" className="hover:text-primary py-2">Privacy Policy</Link>
               <Link to="/terms" className="hover:text-primary py-2">Terms of Service</Link>
             </div>

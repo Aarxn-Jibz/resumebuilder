@@ -200,7 +200,7 @@ export default function CreateResume() {
           {/* Desktop Nav */}
           <div className="hidden md:flex flex-1 justify-end gap-8 items-center">
             <div className="flex gap-9 text-sm font-medium">
-              <a className="hover:text-primary transition-colors" href="#">Templates</a>
+              
               <Link to="/aiscore" className="hover:text-primary transition-colors">AI Score</Link>
             </div>
           </div>

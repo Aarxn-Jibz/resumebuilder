@@ -23,7 +23,6 @@ export default function PrivacyPolicy() {
           {/* Desktop Nav */}
           <div className="hidden md:flex flex-1 justify-end gap-8">
             <div className="flex gap-9 items-center">
-              <Link to="/" className="text-sm hover:text-primary">Home</Link>
               <Link to="/aiscore" className="text-sm hover:text-primary">AI Score</Link>
             </div>
           </div>
@@ -139,8 +138,6 @@ export default function PrivacyPolicy() {
             </div>
 
             <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-subtext-dark">
-              <a className="hover:text-primary" href="#">About Us</a>
-              <a className="hover:text-primary" href="#">Contact</a>
               <Link to="/privacy" className="hover:text-primary text-primary">Privacy Policy</Link>
               <Link to="/terms" className="hover:text-primary">Terms of Service</Link>
             </div>

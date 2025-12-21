@@ -6,7 +6,6 @@ export default function TermsOfService() {
     <div className="font-display bg-background-dark text-text-dark min-h-screen">
       <div className="relative flex flex-col min-h-screen w-full overflow-x-hidden">
 
-        {/* Header (Identical to Home for consistency) */}
         <header className="flex items-center justify-between border-b border-border-dark px-4 sm:px-10 py-3">
           <div className="flex items-center gap-4">
             <Link to="/" className="size-6 text-primary">
@@ -23,7 +22,6 @@ export default function TermsOfService() {
           {/* Desktop Nav */}
           <div className="hidden md:flex flex-1 justify-end gap-8">
             <div className="flex gap-9 items-center">
-              <Link to="/" className="text-sm hover:text-primary">Home</Link>
               <Link to="/aiscore" className="text-sm hover:text-primary">AI Score</Link>
             </div>
 
@@ -129,7 +127,6 @@ export default function TermsOfService() {
           </div>
         </main>
 
-        {/* Footer (Identical to Home) */}
         <footer className="mt-20 border-t border-border-dark py-10 px-4">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8">
             <div className="flex items-center gap-4">
@@ -145,9 +142,7 @@ export default function TermsOfService() {
             </div>
 
             <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-subtext-dark">
-              <a className="hover:text-primary" href="#">About Us</a>
-              <a className="hover:text-primary" href="#">Contact</a>
-              <a className="hover:text-primary" href="#">Privacy Policy</a>
+              <Link to="/privacy" className="hover:text-primary ">Privacy Policy</Link>
               <Link className="hover:text-primary text-primary" to="/terms">Terms of Service</Link>
             </div>
 
