@@ -1,1 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
 @import 'tailwindcss';
+
+
+@font-face {
+    font-family: 'National Park';
+    src: url('./assets/fonts/NationalPark.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+@theme {
+    --font-heading: 'National Park', sans-serif;
+    --font-body: 'Inter', sans-serif;
+
+    --color-main-bg:  #0D181D;
+    --color-main-text: #F0F2F4;
+    --color-accent: #031A5F;
+
+}
