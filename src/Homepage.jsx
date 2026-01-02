@@ -286,7 +286,7 @@ export default function Home() {
 
             {/* Right Section (Copyright) */}
             <p className="text-sm text-subtext-dark md:flex-1 md:text-right">
-              © 2025 ResumeBuilder. All rights reserved.
+              © 2026 ResumeBuilder. All rights reserved.
             </p>
           </div>
         </footer>

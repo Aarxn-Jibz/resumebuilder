@@ -142,7 +142,7 @@ export default function PrivacyPolicy() {
               <Link to="/terms" className="hover:text-primary">Terms of Service</Link>
             </div>
 
-            <p className="text-sm text-subtext-dark">© 2024 ResumeBuilder. All rights reserved.</p>
+            <p className="text-sm text-subtext-dark">© 2026 ResumeBuilder. All rights reserved.</p>
           </div>
         </footer>
 
