@@ -1,22 +1,13 @@
-import type { Component } from 'solid-js';
-import { Router, Route } from '@solidjs/router';
-
-
-import Home from './homepage';
+import type { Component, JSX } from 'solid-js';
 import Header from './Header';
-import Create from './create';
 
-
-const App: Component = () => {
-  return (
-    <>
-      <Header />
-      <Router>
-        <Route path="/" component={Home} />
-        <Route path="/create" component={Create} />
-      </Router>
-    </>
-  );
+const App: Component<{ children?: JSX.Element }> = (props) => {
+    return (
+        <div class="min-h-screen bg-main-bg">
+            <Header />
+            {props.children}
+        </div>
+    );
 };
 
 export default App;
